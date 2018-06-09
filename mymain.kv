@@ -1,0 +1,243 @@
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
+#: import wbr webbrowser
+
+<HomeScreen>:
+    name: "Home"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: 5
+        GridLayout:
+            rows: 6
+            Label:
+                text: "Helpline Numbers & STD Codes Facility"
+                size_hint: (0.5, 0.3)
+           
+            TextInput:
+                id: queryText
+                text: "Enter keywords separated by spaces...\nBefore that, please erase this text by pressing Clear Text button below..."
+                size_hint: (1, 1)
+            Button:
+            	text: "Clear Text"
+            	size_hint: (1, 0.8)
+            	on_press: root.clear_text()
+            Button:
+                text: "Search"
+                size_hint: (1, 0.8)
+                on_press: root.updateQuery()
+                on_release:
+                    root.manager.transition = SlideTransition(direction="down")
+                    root.manager.current = "user_asks"
+            GridLayout:
+                rows: 1
+                cols: 2
+                size_hint: (1, 0.8)
+                Button:
+                	halign: "center"
+                    text: "View All"
+                    on_release:
+                        root.manager.transition = SlideTransition(direction="right")
+                        root.manager.current = 'allphones'
+                Button:
+                    text: "STD Codes"
+                    on_press: root.show_stdcodes()
+                    on_release:
+                        root.manager.transition = SlideTransition(direction="left")
+                        root.manager.current = "stdcodes"
+            Button:
+            	size_hint: (1, 0.8)
+                text: "About this app!"
+                on_release:
+                    root.manager.transition = SlideTransition(direction="up")
+                    root.manager.current = 'about'
+            
+            
+
+<AboutAppScreen>:
+    name: "about"
+    BoxLayout:
+        orientation: "vertical"
+        Label:
+            text: root.about()
+            halign: "center"
+            color: (1, 0.5, 0.3, 1)
+            size_hint_y: 0.8
+		    height: self.texture_size[1]
+		    text_size: self.width, None
+        Button:
+            size_hint: (1, None)
+            text: "Home"
+            on_release:
+                root.manager.transition = SlideTransition(direction="down")
+                root.manager.current = 'Home'
+
+
+<AllNumbersScreen>:
+    name: "allphones"
+    BoxLayout:
+        orientation: "vertical"
+        GridLayout:
+            cols: 1
+            rows: 3
+            Label:
+                text: "All Emergency Numbers"
+                color: (0,1,0,1)
+                size_hint: (0.5, 0.1)
+            ScrollView:
+            	do_scroll_x: True
+            	do_scroll_y: True
+                GridLayout:
+                    cols: 1
+                    rows: int(root.numofrows())
+                    ListView:
+                    	id: list_of_all
+                    	height: "10000dp"
+                        item_strings: [i for i in root.load_phone_numbers()]
+                         
+            Button:
+                text: "Home"
+                size_hint: (0.5, 0.1)
+                on_release:
+                    root.manager.transition = SlideTransition(direction="left")
+                    root.manager.current = "Home"
+
+<SearchResults>:
+    names: "user_asks"
+    BoxLayout:
+        orientation: "vertical"
+        GridLayout:
+            cols: 1
+            rows: 3
+            Label:
+                text: "Search Results"
+                color: (0,1,0,1)
+                size_hint: (0.5, 0.1)
+            ScrollView:
+                do_scroll_x: True
+                GridLayout:
+                    id: main_grid
+                    cols: 1
+                    
+                    ListView:
+                    	id: list_of_query_based
+                    	
+            Button:
+                text: "Home"
+                size_hint: (0.5, 0.1)
+                on_release:
+                    root.manager.transition = SlideTransition(direction="up")
+                    root.manager.current = "Home"
+
+<STDCodesScreen>:
+    name: "stdcodes"
+    BoxLayout:
+        orientation: "vertical"
+        GridLayout:
+            cols: 1
+            rows: 3
+            Label:
+                text: "STD Codes"
+                color: (0,1,0,1)
+                size_hint: (0.5, 0.1)
+            ScrollView:
+                do_scroll_x: True
+                GridLayout:
+                    id: std_grid
+                    cols: 1
+
+                    ListView:
+                    	size_hint: (0.5, 0.7)
+                        id: std_codes_list
+            GridLayout:
+            	size_hint: (0.5, 0.1)
+            	cols: 2
+            	rows: 1
+	            Button:
+	            	text: "Search"
+	            	
+	            	on_release:
+                        root.manager.transition = SlideTransition(direction="left")
+                        root.manager.current = "search_std_code_screen"
+	            Button:
+					text: "Home"
+					
+					on_release:
+					    root.manager.transition = SlideTransition(direction="right")
+					    root.manager.current = "Home"
+
+<STDCodeSearchScreen>:
+	name: "search_std_code_screen"
+	BoxLayout:
+		orientation: "vertical"
+		GridLayout:
+			cols: 1
+			rows: 5
+
+			Label:
+				size_hint: (1, 0.1)
+				text: "STD Code Search Facility"
+
+			TextInput:
+				id: std_query
+				text: "Enter cities separated by spaces...\nBefore that, please erase this text by pressing Clear Text button below..."
+
+			Button:
+				size_hint: (1, 0.1)
+				text: "Clear Text"
+				on_press: root.clear_it()
+			Button:
+				size_hint: (1, 0.1)
+				text: "Search"
+				on_press: root.search_std_code_by_city()
+				on_release:
+					root.manager.transition = SlideTransition(direction="left")
+					root.manager.current = "user_std_query_results_by_city"
+
+			GridLayout:
+				size_hint: (1, 0.1)
+				cols: 2
+				Button:
+					text: "Previous Screen"
+					on_release:
+						root.manager.transition = SlideTransition(direction="right")
+						root.manager.current = "stdcodes"
+				Button:
+					text: "Home"
+					on_release:
+						root.manager.transition = SlideTransition(direction="right")
+						root.manager.current = "Home"
+
+<STDCodeResultsScreen>:
+	name: "user_std_query_results_by_city"
+	BoxLayout:
+		orientation: "vertical"
+		GridLayout:
+			rows: 2
+			id: std_query_grid
+
+			Label: 
+				text: "Search Results"
+
+			ScrollView:
+				ListView:
+					id: results_list_by_city
+
+		GridLayout:
+			cols: 3
+			rows: 1
+			size_hint: (1, 0.1)
+
+			Button:
+				text: "Previous Screen"
+				on_release:
+					root.manager.transition = SlideTransition(direction="right")
+					root.manager.current = "search_std_code_screen"
+			Button:
+				text: "Home"
+				on_release:
+					root.manager.transition = SlideTransition(direction="right")
+					root.manager.current = "Home"
+			Button:
+				text: "All STD Codes"
+				on_release:
+					root.manager.transition = SlideTransition(direction="right")
+					root.manager.current = "stdcodes"

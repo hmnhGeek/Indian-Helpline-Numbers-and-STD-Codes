@@ -1,0 +1,13 @@
+This app lets you find emergency telephone numbers particular to India.
+
+The app also has special section for Uttar Pradesh (NCR)
+
+DEVELOPER: Himanshu Sharma
+
+--------- Report a bug -----------
+Please report any glitch to develop.himanshu@gmail.com
+Any suggestion for improvement is highly appreciated and should be directed to above mail only.
+
+##### DISCLAIMER #####
+The user must understand that this app is only for reference purpose. The developer holds no responsibility for 
+the information provided. The user can consult http://indianhelpline.com for more information.
